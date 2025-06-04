@@ -1,0 +1,11 @@
+---
+title: "About"
+format: 
+  pdf:
+    fig-width: 3
+    fig-height: 2
+    margins: 2in
+bibliography: references.bib
+---
+
+About this site
