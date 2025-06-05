@@ -3,10 +3,6 @@ title: "World Development Indicators Analysis"
 author: "Carl Yu"
 bibliography: references.bib
 format: 
-  revealjs:
-    theme: black
-    transition: slide
-    scrollable: true
   pdf: default
   html: 
     theme: journal

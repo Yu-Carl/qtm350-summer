@@ -71,7 +71,7 @@ ggplot(data = wdi_region, mapping = aes(y=measles_immunisation_rate, x = life_ex
 
 As the life expectancy of a country increases, its measles immunization rate also increases. On average, Oceanian countries seem to have a higher measles immunization rate but lower life expectancy compared to South American countries, and neither region is drastically higher or lower in these indicators compared to the rest of the world.
 
-## Average GDP per Capita {transition = "zoom"}
+## Average GDP per Capita
 
 ```{r}
 #| code-fold: true
