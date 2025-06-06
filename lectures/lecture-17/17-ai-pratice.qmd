@@ -1,0 +1,202 @@
+---
+title: QTM 350 - Data Science Computing
+subtitle: "Practice: A Multi-Agent Data Analysis Workflow with Ollama"
+author:
+  - name: Danilo Freire
+    orcid: 0000-0002-4712-6810 
+    email: danilo.freire@emory.edu
+    affiliations: Emory University
+format:
+  clean-revealjs: 
+    self-contained: true
+    footer: "Multi-Agent Practice" 
+    transition: slide
+    transition-speed: default
+    scrollable: true
+engine: jupyter
+editor:
+  render-on-save: true
+---
+
+# Time to build! 🧑🏻‍💻👩🏼‍💻 {background-color="#2d4563"}
+
+## Hands-on Practice: The Goal
+
+:::{style="margin-top: 30px; font-size: 24px;"}
+
+- **Objective:**
+- In this practical session, you will simulate a real-world data science workflow by creating and orchestrating two distinct, specialised AI agents.
+
+- **Process:**
+- You will build a "Data Strategist" to create an analysis plan, and then a "Python Coder" to write the code for that plan, acting as the project manager between them.
+
+- **Environment:**
+- This entire workflow will run locally on your machine using Ollama.
+
+- **Estimated Time:**
+- 50-60 minutes.
+:::
+
+## Part 1: Building the "Data Strategist" Agent
+
+:::{style="margin-top: 30px; font-size: 22px;"}
+Your first task is to create a high-level AI agent that plans a data analysis project.
+
+- **Create a Project Directory:**
+- Open your terminal, create a new directory, and navigate into it.
+
+```sh
+mkdir multi_agent_practice
+cd multi_agent_practice
+```
+
+- **Choose a Base Model:**
+- We'll use `gemma3:1b` for our planning agent. It's a capable and very lightweight model.
+- Use `ollama pull` to download the model.
+:::
+
+## Part 1: The "Strategist" `Modelfile`
+
+:::{style="margin-top: 30px; font-size: 22px;"}
+
+- **Create the `Modelfile` for the Strategist:**
+- Inside your directory, create `Modelfile.strategist`. Add the following content, which defines our agent's persona.
+
+```yaml
+# Use gemma3:1b as the base model
+FROM gemma3:1b
+
+# Set a higher temperature for more creative planning
+PARAMETER temperature 0.8
+
+# Define the system prompt for the Data Strategist
+SYSTEM """
+You are a Senior Data Strategist. Your expertise is in
+designing clear, concise, and actionable data analysis
+plans. You are brilliant at strategy but you DO NOT
+write code.
+
+When given a description of a dataset, you must provide a
+step-by-step analysis plan in Markdown format. The plan must
+include the following sections:
+1.  **Project Goal:** A single sentence defining the
+    primary objective.
+2.  **Key Research Question:** One specific, answerable
+    question.
+3.  **Data Loading & Cleaning:** A short bulleted list of
+    initial steps.
+4.  **Exploratory Data Analysis (EDA):** A bulleted list of
+    at least three specific visualisations to create.
+"""
+```
+:::
+
+## Part 1: Create and Use the "Strategist"
+
+:::{style="margin-top: 30px; font-size: 22px;"}
+
+- **Create the Strategist Agent:**
+- In your terminal, create the `strategist` model.
+- Use the command `ollama create` with the `-f` flag to specify the `Modelfile.strategist`.
+
+- **Run the Agent:**
+- Now, run the agent and give it the prompt for your project plan.
+- Use `ollama run strategist` to start the agent.
+
+- **Prompt:** `I have a fictitious dataset named 'store_sales.csv' with the columns: 'date', 'product_category', 'units_sold', and 'revenue'.`
+
+- [**Important:**]{.alert} The agent will output a plan. **Manually copy this entire plan**, create a new file named `project_plan.md`, and paste the content into it. Save the file and then type `/bye` to exit the agent.
+:::
+
+## Part 2: Building the "Python Coder" Agent
+
+:::{style="margin-top: 30px; font-size: 22px;"}
+Now you'll build the second agent. Its only job is to write Python code.
+
+- **Choose a Coder Base Model:**
+- We'll use `qwen2.5-coder:1.5b`, a lightweight but capable model specialised for coding.
+- Again, use `ollama pull` to download the model.
+
+- **Create the `Modelfile` for the Coder:**
+- In the same directory, create `Modelfile.coder` and add the following:
+
+```yaml
+# Use qwen2.5-coder:1.5b as the base model
+FROM qwen2.5-coder:1.5b
+
+# Use a low temperature for deterministic code
+PARAMETER temperature 0.2
+
+# Define the system prompt for the Python Coder
+SYSTEM """
+You are a junior Python developer. Your job is to write
+clean, executable Python code based on a specific
+instruction from a project plan.
+- You MUST use the pandas, matplotlib, and seaborn
+  libraries.
+- You write ONLY Python code. Do not include any
+  explanations or text outside of the code itself.
+- Wrap the entire output in a single Markdown code
+  block (```python).
+- Assume the data is already loaded into a pandas
+  DataFrame named 'df'.
+"""
+```
+:::
+
+## Part 2: Create the "Coder" Agent
+
+:::{style="margin-top: 30px; font-size: 22px;"}
+
+- **Create the Coder Agent:**
+- In your terminal, create the `python_coder` model from its `Modelfile`.
+- Use `ollama create` with the `-f` flag to specify the `Modelfile.coder`, just like you did for the strategist.
+
+- *(Self-check:* Run `ollama list` to confirm both `strategist` and `python_coder` are available.)
+
+- Now we have our two specialist agents ready for the integration step!
+:::
+
+## Part 3: Integrating the Agents
+
+:::{style="margin-top: 30px; font-size: 24px;"}
+This is the integration step. You will act as the project manager, taking the plan from the `strategist` and giving a specific task to the `python_coder`.
+
+- **Assign a Task to the Coder:**
+- Open your `project_plan.md` file and look at the "Exploratory Data Analysis (EDA)" section. Choose one of the visualisation tasks (e.g., "Generate a bar chart of revenue by product category") and copy the text.
+
+- **Run the Coder Agent:**
+- In your terminal, run your `python_coder` agent.
+
+- **Manually paste** the single EDA task you copied as a prompt for the `python_coder` and press Enter.
+:::
+
+## Part 3: Finalise the Project
+
+:::{style="margin-top: 30px; font-size: 26px;"}
+
+- **Finalise the Script:**
+- The agent will output the Python code required. **Copy the Python code** generated by `python_coder`.
+- Create a new file in your project directory named `analysis.py` and paste the code into this file.
+- Ensure that the code is commented and ready for execution.
+- Save the commented `analysis.py` file.
+- [**Bonus:**]{.alert} If you want to test your code with actual data, you can download a sample dataset from: [https://github.com/danilofreire/qtm350-summer/blob/main/lectures/lecture-17/store_sales.csv](https://github.com/danilofreire/qtm350-summer/blob/main/lectures/lecture-17/store_sales.csv)
+:::
+
+## Bonus: Vibe coding with GitHub Copilot/Roo Code
+
+:::{style="margin-top: 30px; font-size: 30px;"}
+- If you have time, paste the [Quarto file of this lecture](https://github.com/danilofreire/qtm350-summer/blob/main/lectures/lecture-17/17-ai-pratice.qmd) into GitHub Copilot or Roo Code to see if they could do all the steps above for you!
+:::
+
+## End of Practice Session
+
+:::{style="margin-top: 30px; font-size: 28px;"}
+
+- [Congratulations!]{.alert} 🥳
+- You can now delete the models you created to free up space:
+- Type `ollama ls` to see the list of models, then use `ollama rm <model_name>` to remove them, e.g., `ollama rm strategist` and `ollama rm python_coder`.
+- Many thanks for your hard work today! 🥳
+:::
+
+# And that's all for today! 🎉 {background-color="#2d4563"}
