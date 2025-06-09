@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 title: Font Awesome support
 author: Carlos Scheidegger
 version: 1.1.0
@@ -5,3 +6,12 @@ quarto-required: ">=1.2.269"
 contributes:
   shortcodes:
     - fontawesome.lua
+=======
+title: Font Awesome support
+author: Carlos Scheidegger
+version: 1.1.0
+quarto-required: ">=1.2.269"
+contributes:
+  shortcodes:
+    - fontawesome.lua
+>>>>>>> 4edf062278b36cb61cee689bb06102f9f7563124

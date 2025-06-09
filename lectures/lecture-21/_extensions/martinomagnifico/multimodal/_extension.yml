@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 title: Multimodal
 author:  Martijn De Jongh (Martino)
 version: 1.0.1
@@ -7,4 +8,15 @@ contributes:
     -
       name: Multimodal
       script: multimodal.js
+=======
+title: Multimodal
+author:  Martijn De Jongh (Martino)
+version: 1.0.1
+quarto-required: ">=1.2.198"
+contributes:
+  revealjs-plugins:
+    -
+      name: Multimodal
+      script: multimodal.js
+>>>>>>> 4edf062278b36cb61cee689bb06102f9f7563124
       stylesheet: multimodal.css
