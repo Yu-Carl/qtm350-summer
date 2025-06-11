@@ -1,0 +1,4 @@
+Road Accident Data Summary
+==========================
+Day with most accidents on average: Saturday
+Highest average number of accidents: 18.37
